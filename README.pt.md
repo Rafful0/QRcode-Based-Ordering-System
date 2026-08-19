@@ -1,6 +1,6 @@
 # Açaí Demo — pedidos por QR Code
 
-**[English version](README.en.md)**
+**[English version](README.md)**
 
 Sistema de pedidos para lojas de açaí. O cliente escaneia o QR Code da mesa, monta o pedido
 no próprio celular e o pedido aparece na hora no computador do caixa — substituindo a
