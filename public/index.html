@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#2b0d4f" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Açaí Demo — Faça seu pedido</title>
+    <link rel="stylesheet" href="/css/estilos.css" />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%232b0d4f'/%3E%3Ccircle cx='16' cy='16' r='7' fill='%23ffd400'/%3E%3C/svg%3E"
+    />
+  </head>
+  <body>
+    <!-- ============ Acesso negado (sem QR Code válido) ============ -->
+    <div class="bloqueio oculto" id="telaBloqueio">
+      <div class="bloqueio__cartao">
+        <div class="emoji-grande" id="emojiBloqueio">🔒</div>
+        <h1 id="tituloBloqueio">Acesso pelo QR Code</h1>
+        <p id="mensagemBloqueio">
+          Para fazer seu pedido, escaneie o QR Code que está na sua mesa. O cardápio digital só
+          abre por lá.
+        </p>
+        <button class="botao botao--contorno botao--pequeno oculto" id="botaoTentarDeNovo" type="button"
+          style="margin-top: 18px">
+          Tentar de novo
+        </button>
+      </div>
+    </div>
+
+    <!-- ============ Aplicativo ============ -->
+    <div id="app" class="oculto">
+      <header class="topo">
+        <div class="topo__linha">
+          <span class="marca">
+            <span class="marca__primaria">Açaí</span>
+            <span class="marca__secundaria">Demo</span>
+            <span class="marca__ponto"></span>
+          </span>
+          <span class="selo-mesa" id="seloMesa">Mesa —</span>
+        </div>
+        <div class="progresso"><div class="progresso__barra" id="barraProgresso"></div></div>
+      </header>
+
+      <main>
+        <!-- ---- Passo 1: quantos açaís ---- -->
+        <section class="tela" id="telaInicio">
+          <div class="envelope">
+            <div class="hero">
+              <h1>Monte <em>do seu jeito</em></h1>
+              <p id="sloganLoja">
+                Escolha tamanho, base, condimentos, coberturas e acompanhamentos. Sem fila, sem
+                papel.
+              </p>
+            </div>
+
+            <p class="rotulo-secao">Passo 1 de 3</p>
+            <h2 class="titulo-tela">Quantos açaís?</h2>
+            <p class="subtitulo-tela">
+              Depois você personaliza cada um deles separadamente.
+            </p>
+
+            <div class="contador">
+              <button
+                class="contador__botao"
+                id="botaoMenos"
+                type="button"
+                aria-label="Diminuir quantidade"
+              >
+                −
+              </button>
+              <div>
+                <div class="contador__valor" id="valorQuantidade" aria-live="polite">1</div>
+                <span class="contador__legenda" id="legendaQuantidade">açaí</span>
+              </div>
+              <button
+                class="contador__botao"
+                id="botaoMais"
+                type="button"
+                aria-label="Aumentar quantidade"
+              >
+                +
+              </button>
+            </div>
+
+            <div class="atalhos" id="atalhosQuantidade" role="group" aria-label="Atalhos de quantidade"></div>
+          </div>
+
+          <div class="barra-fixa">
+            <div class="barra-fixa__conteudo">
+              <button class="botao botao--principal botao--largo" id="botaoComecar" type="button">
+                Começar pedido →
+              </button>
+            </div>
+          </div>
+        </section>
+
+        <!-- ---- Passo 2: montagem de cada açaí ---- -->
+        <section class="tela oculto" id="telaMontagem">
+          <div class="envelope">
+            <p class="rotulo-secao">Passo 2 de 3</p>
+            <h2 class="titulo-tela" id="tituloMontagem">Açaí 1</h2>
+            <p class="subtitulo-tela" id="subtituloMontagem">Escolha as opções abaixo.</p>
+
+            <nav class="trilha" id="trilhaAcais" aria-label="Navegar entre os açaís"></nav>
+
+            <div id="avisoMontagem"></div>
+            <div id="categorias"></div>
+
+            <div class="grupo">
+              <label class="campo">
+                <span class="campo__rotulo">Observação para a cozinha (opcional)</span>
+                <textarea
+                  class="campo__entrada"
+                  id="campoObservacao"
+                  rows="2"
+                  maxlength="180"
+                  placeholder="Ex: pouca calda, sem granola por cima…"
+                ></textarea>
+              </label>
+            </div>
+          </div>
+
+          <div class="barra-fixa">
+            <div class="barra-fixa__conteudo">
+              <button class="botao botao--contorno botao--pequeno" id="botaoVoltarMontagem" type="button">
+                ← Voltar
+              </button>
+              <div class="barra-fixa__valor">
+                <small>Este açaí</small>
+                <strong id="precoItemAtual">R$ 0,00</strong>
+              </div>
+              <button class="botao botao--principal" id="botaoAvancar" type="button">
+                Avançar →
+              </button>
+            </div>
+          </div>
+        </section>
+
+        <!-- ---- Passo 3: revisão ---- -->
+        <section class="tela oculto" id="telaRevisao">
+          <div class="envelope">
+            <p class="rotulo-secao">Passo 3 de 3</p>
+            <h2 class="titulo-tela">Confira seu pedido</h2>
+            <p class="subtitulo-tela">
+              Tudo certo? É só enviar que o caixa já recebe na hora.
+            </p>
+
+            <div id="avisoRevisao"></div>
+            <div id="listaRevisao"></div>
+
+            <div class="total-caixa">
+              <span>Total do pedido</span>
+              <strong id="totalPedido">R$ 0,00</strong>
+            </div>
+
+            <div class="grupo">
+              <label class="campo">
+                <span class="campo__rotulo">Seu nome (opcional)</span>
+                <input
+                  class="campo__entrada"
+                  id="campoNome"
+                  type="text"
+                  maxlength="40"
+                  autocomplete="name"
+                  placeholder="Para o caixa te chamar"
+                />
+              </label>
+            </div>
+          </div>
+
+          <div class="barra-fixa">
+            <div class="barra-fixa__conteudo">
+              <button class="botao botao--contorno botao--pequeno" id="botaoVoltarRevisao" type="button">
+                ← Editar
+              </button>
+              <button class="botao botao--principal" id="botaoEnviar" type="button">
+                Enviar pedido
+              </button>
+            </div>
+          </div>
+        </section>
+
+        <!-- ---- Confirmação ---- -->
+        <section class="tela oculto" id="telaConfirmacao">
+          <div class="envelope">
+            <div class="confirmacao">
+              <div class="confirmacao__icone">🎉</div>
+              <p class="rotulo-secao">Pedido enviado</p>
+              <div class="numero-pedido" id="numeroPedido">#0</div>
+              <p class="subtitulo-tela" id="mensagemConfirmacao">
+                Seu pedido foi para a cozinha! Fique de olho no status.
+              </p>
+
+              <div class="linha-status" id="linhaStatus">
+                <div class="etapa etapa--ativa" data-etapa="novo">Recebido</div>
+                <div class="etapa" data-etapa="preparo">Preparando</div>
+                <div class="etapa" data-etapa="pronto">Pronto</div>
+                <div class="etapa" data-etapa="entregue">Entregue</div>
+              </div>
+
+              <div class="total-caixa">
+                <span>Total</span>
+                <strong id="totalConfirmado">R$ 0,00</strong>
+              </div>
+
+              <button class="botao botao--roxo botao--largo" id="botaoNovoPedido" type="button">
+                Fazer outro pedido
+              </button>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <div class="notificacao" id="notificacao" role="status" aria-live="polite"></div>
+
+    <script src="/js/pedido.js"></script>
+  </body>
+</html>

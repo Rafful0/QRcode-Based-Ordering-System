@@ -1,0 +1,20 @@
+data/
+data-*/
+
+# Variáveis de ambiente
+.env
+.env.*
+!.env.example
+
+# Dependências e sobras de execução
+node_modules/
+*.log
+npm-debug.log*
+
+# Sistema operacional e editores
+Thumbs.db
+desktop.ini
+.DS_Store
+.vscode/
+.idea/
+*.swp

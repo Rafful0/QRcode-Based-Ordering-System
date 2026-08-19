@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#1c0733" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Caixa — Açaí Demo</title>
+    <link rel="stylesheet" href="/css/estilos.css" />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%232b0d4f'/%3E%3Ccircle cx='16' cy='16' r='7' fill='%23ffd400'/%3E%3C/svg%3E"
+    />
+  </head>
+  <body>
+    <div id="painel" class="oculto">
+      <header class="painel-topo">
+        <span class="marca">
+          <span class="marca__primaria">Açaí</span>
+          <span class="marca__secundaria">Demo</span>
+          <span class="marca__ponto"></span>
+        </span>
+
+        <nav class="painel-nav">
+          <a href="/{{ROTA_CAIXA}}" aria-current="page">Caixa</a>
+          <a href="/{{ROTA_ADMIN}}">Administração</a>
+        </nav>
+
+        <div style="display: flex; align-items: center; gap: 16px">
+          <span class="indicador-conexao">
+            <span class="ponto-conexao" id="pontoConexao"></span>
+            <span id="rotuloConexao">Conectando…</span>
+          </span>
+          <label class="interruptor" style="color: rgba(255, 255, 255, 0.72)">
+            <input type="checkbox" id="alternarSom" checked />
+            Som
+          </label>
+          <button class="botao botao--contorno botao--pequeno" id="botaoSair" type="button"
+            style="border-color: rgba(255,255,255,.3); color: #fff">
+            Sair
+          </button>
+        </div>
+      </header>
+
+      <div class="painel-corpo">
+        <div class="envelope envelope--largo">
+          <div class="metricas">
+            <div class="metrica metrica--destaque">
+              <small>Aguardando</small>
+              <strong id="metricaAguardando">0</strong>
+            </div>
+            <div class="metrica">
+              <small>Pedidos hoje</small>
+              <strong id="metricaPedidos">0</strong>
+            </div>
+            <div class="metrica">
+              <small>Açaís hoje</small>
+              <strong id="metricaAcais">0</strong>
+            </div>
+            <div class="metrica">
+              <small>Faturamento</small>
+              <strong id="metricaFaturamento">R$ 0,00</strong>
+            </div>
+          </div>
+
+          <!-- Liberação de mesas: só aparece se o modo estrito estiver ligado -->
+          <section class="painel-secao oculto" id="secaoLiberacao" style="padding: 18px 22px">
+            <div class="painel-secao__topo" style="margin-bottom: 12px">
+              <div>
+                <h2 style="font-size: 1.1rem">Mesas liberadas</h2>
+                <p id="ajudaLiberacao">
+                  Só mesas liberadas conseguem enviar pedido. Libere quando o cliente sentar.
+                </p>
+              </div>
+            </div>
+            <div class="grade-liberacao" id="gradeLiberacao"></div>
+          </section>
+
+          <!-- Filtros: escondem colunas inteiras, deixando o quadro compacto -->
+          <div class="filtros">
+            <div class="filtros__linha">
+              <span class="filtros__rotulo">Etapa</span>
+              <div class="etiquetas-filtro" id="filtroStatus" role="group" aria-label="Filtrar por etapa"></div>
+            </div>
+
+            <div class="filtros__linha">
+              <span class="filtros__rotulo">Mesa</span>
+              <div class="etiquetas-filtro" id="filtroMesa" role="group" aria-label="Filtrar por mesa"></div>
+            </div>
+
+            <div class="filtros__linha">
+              <span class="filtros__rotulo">Buscar</span>
+              <input
+                class="filtros__busca"
+                id="filtroBusca"
+                type="search"
+                placeholder="Nº do pedido, nome do cliente ou item…"
+                aria-label="Buscar pedidos"
+              />
+              <span class="filtros__resultado" id="filtroResultado" aria-live="polite"></span>
+              <button class="botao botao--fantasma botao--pequeno oculto" id="botaoLimparFiltros" type="button">
+                Limpar filtros
+              </button>
+            </div>
+          </div>
+
+          <div class="quadro">
+            <section class="coluna" data-coluna="novo">
+              <h2 class="coluna__titulo">
+                Novos <span class="coluna__contagem" id="contagemNovo">0</span>
+              </h2>
+              <div id="colunaNovo"></div>
+            </section>
+
+            <section class="coluna" data-coluna="preparo">
+              <h2 class="coluna__titulo">
+                Em preparo <span class="coluna__contagem" id="contagemPreparo">0</span>
+              </h2>
+              <div id="colunaPreparo"></div>
+            </section>
+
+            <section class="coluna" data-coluna="pronto">
+              <h2 class="coluna__titulo">
+                Prontos <span class="coluna__contagem" id="contagemPronto">0</span>
+              </h2>
+              <div id="colunaPronto"></div>
+            </section>
+
+            <section class="coluna" data-coluna="finalizado">
+              <h2 class="coluna__titulo">
+                Finalizados <span class="coluna__contagem" id="contagemFinalizado">0</span>
+              </h2>
+              <div id="colunaFinalizado"></div>
+            </section>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="/js/painel-comum.js"></script>
+    <script src="/js/caixa.js"></script>
+  </body>
+</html>

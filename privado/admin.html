@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#1c0733" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Administração — Açaí Demo</title>
+    <link rel="stylesheet" href="/css/estilos.css" />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%232b0d4f'/%3E%3Ccircle cx='16' cy='16' r='7' fill='%23ffd400'/%3E%3C/svg%3E"
+    />
+  </head>
+  <body>
+    <div id="painel" class="oculto">
+      <header class="painel-topo nao-imprimir">
+        <span class="marca">
+          <span class="marca__primaria">Açaí</span>
+          <span class="marca__secundaria">Demo</span>
+          <span class="marca__ponto"></span>
+        </span>
+
+        <nav class="painel-nav">
+          <a href="/{{ROTA_CAIXA}}">Caixa</a>
+          <a href="/{{ROTA_ADMIN}}" aria-current="page">Administração</a>
+        </nav>
+
+        <button class="botao botao--contorno botao--pequeno" id="botaoSair" type="button"
+          style="border-color: rgba(255,255,255,.3); color: #fff">
+          Sair
+        </button>
+      </header>
+
+      <div class="painel-corpo">
+        <div class="envelope envelope--largo">
+          <!-- Filtro de seções: mostra uma área por vez, encurtando a página -->
+          <div class="filtros esconder-na-impressao">
+            <div class="filtros__linha">
+              <span class="filtros__rotulo">Seção</span>
+              <div class="etiquetas-filtro" id="filtroSecao" role="group" aria-label="Filtrar seções"></div>
+            </div>
+          </div>
+
+          <!-- ============ Identidade da loja ============ -->
+          <section data-secao="loja" class="painel-secao esconder-na-impressao">
+            <div class="painel-secao__topo">
+              <div>
+                <h2>Identidade da loja</h2>
+                <p>Aparece no topo do formulário que o cliente vê.</p>
+              </div>
+            </div>
+
+            <div class="linha-campos">
+              <label class="campo">
+                <span class="campo__rotulo">Nome</span>
+                <input class="campo__entrada" id="lojaNome" type="text" maxlength="40" />
+              </label>
+              <label class="campo">
+                <span class="campo__rotulo">Chamada da capa</span>
+                <input class="campo__entrada" id="lojaSlogan" type="text" maxlength="120" />
+              </label>
+              <label class="campo">
+                <span class="campo__rotulo">Mensagem após enviar</span>
+                <input class="campo__entrada" id="lojaMensagem" type="text" maxlength="120" />
+              </label>
+            </div>
+          </section>
+
+          <!-- ============ Cardápio ============ -->
+          <section data-secao="cardapio" class="painel-secao esconder-na-impressao">
+            <div class="painel-secao__topo">
+              <div>
+                <h2>Cardápio</h2>
+                <p>
+                  Cada categoria vira um bloco de caixinhas no formulário. Alterações valem para
+                  os próximos pedidos.
+                </p>
+              </div>
+              <div style="display: flex; gap: 8px; flex-wrap: wrap">
+                <button class="botao botao--contorno botao--pequeno" id="botaoNovaCategoria" type="button">
+                  + Categoria
+                </button>
+                <button class="botao botao--principal botao--pequeno" id="botaoSalvarMenu" type="button">
+                  Salvar cardápio
+                </button>
+              </div>
+            </div>
+
+            <div class="filtros filtros--interno">
+              <div class="filtros__linha">
+                <span class="filtros__rotulo">Buscar</span>
+                <input
+                  class="filtros__busca"
+                  id="buscaCardapio"
+                  type="search"
+                  placeholder="Nome de categoria ou opção — ex: nutella, cobertura…"
+                  aria-label="Buscar no cardápio"
+                />
+                <span class="filtros__resultado" id="resultadoCardapio" aria-live="polite"></span>
+                <button class="botao botao--fantasma botao--pequeno" id="botaoRecolherTudo" type="button">
+                  Recolher tudo
+                </button>
+              </div>
+            </div>
+
+            <div id="avisoMenu"></div>
+            <div id="editorCategorias"></div>
+          </section>
+
+          <!-- ============ Mesas e QR ============ -->
+          <section data-secao="mesas" class="painel-secao">
+            <div class="painel-secao__topo esconder-na-impressao">
+              <div>
+                <h2>Mesas e QR Codes</h2>
+                <p>
+                  Cada mesa tem um código secreto próprio. Sem ele o formulário não abre.
+                </p>
+              </div>
+              <div style="display: flex; gap: 8px; flex-wrap: wrap">
+                <button class="botao botao--contorno botao--pequeno" id="botaoNovaMesa" type="button">
+                  + Mesa
+                </button>
+                <button class="botao botao--roxo botao--pequeno" id="botaoImprimirQr" type="button">
+                  Imprimir QR Codes
+                </button>
+              </div>
+            </div>
+
+            <div class="esconder-na-impressao">
+              <label class="campo" style="margin-bottom: 18px">
+                <span class="campo__rotulo">
+                  Endereço usado nos QR Codes
+                </span>
+                <div style="display: flex; gap: 8px; flex-wrap: wrap">
+                  <input
+                    class="campo__entrada"
+                    id="campoBaseUrl"
+                    type="text"
+                    style="flex: 1; min-width: 240px"
+                    placeholder="http://192.168.0.10:3000"
+                  />
+                  <button class="botao botao--contorno botao--pequeno" id="botaoSalvarBase" type="button">
+                    Aplicar
+                  </button>
+                </div>
+                <small style="color: var(--cinza-600); display: block; margin-top: 6px" id="dicaBaseUrl"></small>
+              </label>
+
+              <div class="bloco-enderecos">
+                <p class="rotulo-secao">Acesso ao painel pela rede</p>
+                <p class="bloco-enderecos__ajuda">
+                  Use estes endereços para abrir o caixa em outro computador ou celular da
+                  mesma rede. Guarde-os: as rotas são secretas e não aparecem em nenhum link
+                  público.
+                </p>
+                <div id="enderecosPainel"></div>
+              </div>
+
+              <div class="grade-mesas" id="grademesas"></div>
+            </div>
+
+            <!-- Folha só visível na impressão -->
+            <div class="folha-qr" id="folhaQr"></div>
+          </section>
+
+          <!-- ============ Acesso do cliente ============ -->
+          <section data-secao="acesso" class="painel-secao esconder-na-impressao">
+            <div class="painel-secao__topo">
+              <div>
+                <h2>Acesso do cliente</h2>
+                <p>
+                  Quem copia o link do QR Code fica com uma cópia válida dele. Estas regras
+                  limitam o que esse link consegue fazer fora da loja.
+                </p>
+              </div>
+              <button class="botao botao--principal botao--pequeno" id="botaoSalvarAcesso" type="button">
+                Salvar regras
+              </button>
+            </div>
+
+            <div id="avisoAcesso"></div>
+
+            <h3 class="rotulo-secao" style="margin-top: 6px">Horário de funcionamento</h3>
+            <p class="bloco-enderecos__ajuda">
+              Fora do horário nenhum pedido entra, venha de onde vier. Não atrapalha o
+              atendimento e já resolve os pedidos de madrugada.
+            </p>
+            <label class="interruptor" style="margin-bottom: 12px">
+              <input type="checkbox" id="horarioAtivo" />
+              Recusar pedidos fora do horário
+            </label>
+            <div class="linha-campos" style="max-width: 420px">
+              <label class="campo">
+                <span class="campo__rotulo">Abre</span>
+                <input class="campo__entrada" id="horarioAbre" type="time" />
+              </label>
+              <label class="campo">
+                <span class="campo__rotulo">Fecha</span>
+                <input class="campo__entrada" id="horarioFecha" type="time" />
+              </label>
+            </div>
+            <div class="dias-semana" id="diasSemana"></div>
+
+            <h3 class="rotulo-secao" style="margin-top: 24px">Liberação de mesa pelo caixa</h3>
+            <p class="bloco-enderecos__ajuda">
+              A única regra que realmente separa quem está na loja de quem copiou o link: a
+              mesa só aceita pedido depois que alguém do balcão a libera. Custa um clique por
+              mesa — ligue se houver abuso.
+            </p>
+            <label class="interruptor" style="margin-bottom: 12px">
+              <input type="checkbox" id="exigirLiberacao" />
+              Exigir que o caixa libere a mesa
+            </label>
+            <div class="linha-campos" style="max-width: 420px">
+              <label class="campo">
+                <span class="campo__rotulo">Validade da liberação (minutos)</span>
+                <input class="campo__entrada" id="liberacaoMinutos" type="number" min="5" max="720" />
+              </label>
+            </div>
+
+            <h3 class="rotulo-secao" style="margin-top: 24px">Teto por mesa</h3>
+            <p class="bloco-enderecos__ajuda">
+              Não impede o primeiro pedido falso, mas limita o estrago. Use 0 para desligar.
+            </p>
+            <div class="linha-campos" style="max-width: 420px">
+              <label class="campo">
+                <span class="campo__rotulo">Máximo de pedidos por mesa, por hora</span>
+                <input class="campo__entrada" id="maxPedidosMesaHora" type="number" min="0" max="200" />
+              </label>
+            </div>
+          </section>
+
+          <!-- ============ Segurança ============ -->
+          <section data-secao="seguranca" class="painel-secao esconder-na-impressao">
+            <div class="painel-secao__topo">
+              <div>
+                <h2>Segurança</h2>
+                <p>PIN de acesso ao caixa e a esta página.</p>
+              </div>
+            </div>
+
+            <div id="avisoPin"></div>
+            <div class="linha-campos" style="max-width: 620px">
+              <label class="campo">
+                <span class="campo__rotulo">Senha atual</span>
+                <input class="campo__entrada" id="pinAtual" type="password" autocomplete="current-password" maxlength="64" />
+              </label>
+              <label class="campo">
+                <span class="campo__rotulo">Nova senha (mín. 6 caracteres)</span>
+                <input class="campo__entrada" id="pinNovo" type="password" autocomplete="new-password" maxlength="64"
+                  placeholder="Uma frase curta é mais segura" />
+              </label>
+              <div style="display: flex; align-items: flex-end">
+                <button class="botao botao--roxo botao--largo" id="botaoTrocarPin" type="button">
+                  Trocar PIN
+                </button>
+              </div>
+            </div>
+          </section>
+        </div>
+      </div>
+    </div>
+
+    <script src="/js/qrcode.js"></script>
+    <script src="/js/painel-comum.js"></script>
+    <script src="/js/admin.js"></script>
+  </body>
+</html>
